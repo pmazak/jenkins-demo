@@ -1,25 +1,4 @@
 apply plugin: 'jetty'
-repositories {
-     add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-        name = 'absoluteUrlPathJar'
-        addArtifactPattern('http://[organization]/[artifact]')
-    }
-}
-configurations {
-    hudson
-}
-dependencies {
-    //hudson "java.net/downloads/hudson/war:hudson-1.398.war@war"
-}
-configurations.hudson.each{
-    println it
-}
-war {
-    ant.get(src: 'http://java.net/downloads/hudson/war/hudson-1.398.war', 
-        dest: '.gradle/hudson.war', skipexisting: true, verbose:true)
-    ant.get(src: 'http://mirrors.jenkins-ci.org/war/latest/jenkins.war', 
-        dest: '.gradle/jenkins.war', skipexisting: true, verbose:true)
-}
 defaultTasks "opts"
 task opts << {
     println """Usage: gradle [hudson|jenkins]-[basic|intermediate|expert]"""
