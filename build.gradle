@@ -1,29 +1,40 @@
 apply plugin: 'jetty'
 defaultTasks "opts"
 task opts << {
-    println """Usage: gradle [hudson|jenkins]-[basic|intermediate|expert]"""
+    println """Usage: gradle [hudson|jenkins]-[basic|intermediate|expert]
+ Examples: 
+          gradle hudson-basic
+          gradle jenkins-intermediate
+"""
 }
 task "hudson-basic" << {
-    configJetty('http://java.net/downloads/hudson/war/hudson-1.398.war',
-        'hudson.war', 'hudson-basic')
+    def ver = 1.393
+    configJetty("http://java.net/downloads/hudson/war/hudson-${ver}.war",
+        "hudson-${ver}.war", "hudson-basic")
     jettyRunWar.execute()
 }
 task "jenkins-basic" << {
-    configJetty('http://mirrors.jenkins-ci.org/war/1.403/jenkins.war',
-        'jenkins.war', 'jenkins-basic')
+    def ver = 1.392
+    def ciName = "jenkins"
+    if (ver < 1.396) {
+        ciName = "hudson"
+    }
+    configJetty("http://mirrors.jenkins-ci.org/war/${ver}/${ciName}.war",
+        "jenkins-${ver}.war", "jenkins-basic")
     jettyRunWar.execute()
 }
 def configJetty(downloadUrl, fileName, ciName) {
     jettyRunWar {
         ant.get(src:downloadUrl, dest:".gradle/$fileName", skipexisting:true, verbose:true)
+        System.setProperty("HUDSON_HOME", "config/.$ciName")
         contextPath = ciName
         webApp = new File(".gradle/$fileName")
-        System.setProperty("HUDSON_HOME", ".gradle/.$ciName")
-        stopKey = "q"
         doFirst {
-            println """Server is up!
-            Browse to: http://localhost:8080/$contextPath
-        ('q' to stop)"""
+            println """
+Server is up!
+    Browse to: http://localhost:8080/$contextPath
+  (Control-C to stop)
+"""
         }
     }
 }
