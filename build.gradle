@@ -1,0 +1,12 @@
+apply plugin: 'jetty'
+jettyRun {
+    ant.get(src: 'http://java.net/downloads/hudson/war/hudson-1.398.war', dest: '.gradle/hudson.war', verbose:true)
+    contextPath = "/hudson1"
+    webAppSourceDirectory = new File(".gradle/hudson.war")
+    doFirst {
+        println """Server is up!
+    Browse to: http://localhost:8080$contextPath
+(Control-C to stop)"""
+    }
+}
+defaultTasks "jettyRun"
