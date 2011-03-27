@@ -1,11 +1,26 @@
 apply plugin: 'jetty'
+
+repositories {
+     add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+        name = 'absoluteUrlPathJar'
+        addArtifactPattern('http://[organization]/[artifact]')
+    }
+}
+configurations {
+    hudson
+}
+dependencies {
+    hudson "java.net/downloads/hudson/war:hudson-1.398.war"
+}
 jettyRun {
-    ant.get(src: 'http://java.net/downloads/hudson/war/hudson-1.398.war', dest: '.gradle/hudson.war', verbose:true)
     contextPath = "/hudson1"
-    webAppSourceDirectory = new File(".gradle/hudson.war")
+    configurations.hudson.each{
+    println it
+    }
+    webAppSourceDirectory = new File("")
     doFirst {
         println """Server is up!
-    Browse to: http://localhost:8080$contextPath
+    Browse to: http://localhost:8080/
 (Control-C to stop)"""
     }
 }
