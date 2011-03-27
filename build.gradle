@@ -1,5 +1,4 @@
 apply plugin: 'jetty'
-
 repositories {
      add(new org.apache.ivy.plugins.resolver.URLResolver()) {
         name = 'absoluteUrlPathJar'
@@ -10,18 +9,42 @@ configurations {
     hudson
 }
 dependencies {
-    hudson "java.net/downloads/hudson/war:hudson-1.398.war"
+    //hudson "java.net/downloads/hudson/war:hudson-1.398.war@war"
 }
-jettyRun {
-    contextPath = "/hudson1"
-    configurations.hudson.each{
+configurations.hudson.each{
     println it
-    }
-    webAppSourceDirectory = new File("")
-    doFirst {
-        println """Server is up!
-    Browse to: http://localhost:8080/
-(Control-C to stop)"""
+}
+war {
+    ant.get(src: 'http://java.net/downloads/hudson/war/hudson-1.398.war', 
+        dest: '.gradle/hudson.war', skipexisting: true, verbose:true)
+    ant.get(src: 'http://mirrors.jenkins-ci.org/war/latest/jenkins.war', 
+        dest: '.gradle/jenkins.war', skipexisting: true, verbose:true)
+}
+defaultTasks "opts"
+task opts << {
+    println """Usage: gradle [hudson|jenkins]-[basic|intermediate|expert]"""
+}
+task "hudson-basic" << {
+    configJetty('http://java.net/downloads/hudson/war/hudson-1.398.war',
+        'hudson.war', 'hudson-basic')
+    jettyRunWar.execute()
+}
+task "jenkins-basic" << {
+    configJetty('http://mirrors.jenkins-ci.org/war/1.403/jenkins.war',
+        'jenkins.war', 'jenkins-basic')
+    jettyRunWar.execute()
+}
+def configJetty(downloadUrl, fileName, ciName) {
+    jettyRunWar {
+        ant.get(src:downloadUrl, dest:".gradle/$fileName", skipexisting:true, verbose:true)
+        contextPath = ciName
+        webApp = new File(".gradle/$fileName")
+        System.setProperty("HUDSON_HOME", ".gradle/.$ciName")
+        stopKey = "q"
+        doFirst {
+            println """Server is up!
+            Browse to: http://localhost:8080/$contextPath
+        ('q' to stop)"""
+        }
     }
 }
-defaultTasks "jettyRun"
