@@ -1,5 +1,11 @@
-apply plugin: 'jetty'
+def HUDSON_VERSION = 1.393
+def JENKINS_VERSION = 1.392
+
+apply plugin: 'jetty'    
 defaultTasks "opts"
+port = System.properties['port'] ? Integer.parseInt(System.properties['port']) : 8080
+buildDir = "build$port"
+
 task opts << {
     println """Usage: gradle [hudson|jenkins]-[basic|intermediate|expert]
  Examples: 
@@ -8,31 +14,31 @@ task opts << {
 """
 }
 task "hudson-basic" << {
-    def ver = 1.393
-    configJetty("http://java.net/downloads/hudson/war/hudson-${ver}.war",
-        "hudson-${ver}.war", "hudson-basic")
+    configJetty("http://java.net/downloads/hudson/war/hudson-${HUDSON_VERSION}.war",
+        "hudson-${HUDSON_VERSION}.war", "hudson-basic")
     jettyRunWar.execute()
 }
 task "jenkins-basic" << {
-    def ver = 1.392
     def ciName = "jenkins"
-    if (ver < 1.396) {
+    if (JENKINS_VERSION < 1.396) {
         ciName = "hudson"
     }
-    configJetty("http://mirrors.jenkins-ci.org/war/${ver}/${ciName}.war",
-        "jenkins-${ver}.war", "jenkins-basic")
+    configJetty("http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/${ciName}.war",
+        "jenkins-${JENKINS_VERSION}.war", "jenkins-basic")
     jettyRunWar.execute()
 }
 def configJetty(downloadUrl, fileName, ciName) {
+    clean.execute()
+    ant.get(src:downloadUrl, dest:".gradle/$fileName", skipexisting:true, verbose:true)
     jettyRunWar {
-        ant.get(src:downloadUrl, dest:".gradle/$fileName", skipexisting:true, verbose:true)
+        httpPort = port
         System.setProperty("HUDSON_HOME", "config/.$ciName")
         contextPath = ciName
         webApp = new File(".gradle/$fileName")
         doFirst {
             println """
 Server is up!
-    Browse to: http://localhost:8080/$contextPath
+    Browse to: http://localhost:$port/$contextPath
   (Control-C to stop)
 """
         }
