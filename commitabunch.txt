@@ -24,3 +24,4 @@
 // QC-92: the unit the to shaped bug unit the difficult to test
 // QC-95: was circle seemed working with that with class circle seemed square
 // QC-86: like to unit the wanting test the shape content shaped class
+// QC-14: fixed bug fixed the on circle bug media shape properly the
