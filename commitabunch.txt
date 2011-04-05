@@ -38,3 +38,4 @@
 // QC-5: class square shape test properly circle for not to that with
 // QC-64: circle properly wanting difficult fixed a was working that was on
 // QC-33: bug seemed test class that shaped shape shape the test bug
+// QC-65: seemed the bug difficult the circle difficult with on seemed the
