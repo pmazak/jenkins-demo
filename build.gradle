@@ -44,3 +44,19 @@ Server is up!
         }
     }
 }
+task commitabunch {
+    def rand = new Random()
+    def str = "fixed a bug with the media content not wanting to shape the circle properly like the square was shaped working on unit test for class that seemed difficult"
+    def strs = str.split(' ')
+    def randCommits = rand.nextInt(21)+1
+    (1..randCommits).each {
+       def randNum = rand.nextInt(101)+1
+       def randStr = ""
+       (0..10).each {
+           randStr += " " + strs[rand.nextInt(strs.length)]
+       }
+       def comment = "QC-$randNum:$randStr"
+       new File("commitabunch.txt") << "// $comment\n"
+       "git commit -am '$comment'".execute()
+    }
+}
