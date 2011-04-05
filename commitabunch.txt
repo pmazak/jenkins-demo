@@ -7,3 +7,4 @@
 // QC-90: fixed test square with square that media a unit shape class
 // QC-15: unit fixed was the like not for the the unit square
 // QC-24: shaped wanting unit fixed properly working content on content class circle
+// QC-26: with working class with on a the that class not fixed
