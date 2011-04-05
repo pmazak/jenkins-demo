@@ -27,3 +27,4 @@
 // QC-14: fixed bug fixed the on circle bug media shape properly the
 // QC-74: bug shape a the fixed test to fixed unit that to
 // QC-91: like media class class like was content test shaped that working
+// QC-4: fixed difficult shaped media test not the not properly seemed to
