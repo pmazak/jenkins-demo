@@ -35,3 +35,4 @@
 // QC-88: media was difficult that was was circle not with not shaped
 // QC-96: square seemed bug circle on media with media on to shape
 // QC-63: test media wanting the properly that like unit test the wanting
+// QC-5: class square shape test properly circle for not to that with
