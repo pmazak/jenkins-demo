@@ -9,3 +9,4 @@
 // QC-24: shaped wanting unit fixed properly working content on content class circle
 // QC-26: with working class with on a the that class not fixed
 // QC-63: not shaped was on on fixed shaped that circle like wanting
+// QC-34: test not properly on content fixed bug shaped unit unit content
