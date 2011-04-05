@@ -41,3 +41,4 @@
 // QC-65: seemed the bug difficult the circle difficult with on seemed the
 // QC-33: difficult was unit content that shaped difficult shape not to a
 // QC-69: difficult was class content the with the properly shaped the seemed
+// QC-69: circle with fixed bug media working shaped circle media not content
