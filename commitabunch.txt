@@ -2,3 +2,4 @@
 // QC-43: fixed the shape fixed test seemed the to square the fixed
 // QC-8: square bug was not a seemed class class circle on circle
 // QC-42: the fixed circle was not shaped class to for wanting bug
+// QC-80: the content square class class the shape square shaped unit unit
