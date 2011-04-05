@@ -5,3 +5,4 @@
 // QC-80: the content square class class the shape square shaped unit unit
 // QC-29: media class difficult on on on wanting wanting shape class shaped
 // QC-90: fixed test square with square that media a unit shape class
+// QC-15: unit fixed was the like not for the the unit square
