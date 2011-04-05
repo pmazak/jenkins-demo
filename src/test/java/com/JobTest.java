@@ -7,4 +7,12 @@ public class JobTest {
   public void testTrue() {
     assertTrue(true);
   }
+  @Test
+  public void testFalse() {
+    assertFalse(false);
+  }
+  @Test
+  public void testFailure() {
+    assertTrue(false);
+  }
 }
