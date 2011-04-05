@@ -32,3 +32,4 @@
 // QC-50: for properly class fixed shape shape working fixed class that unit
 // QC-74: to bug bug content seemed bug shape square media was properly
 // QC-14: shape unit the fixed was like fixed with circle content fixed
+// QC-88: media was difficult that was was circle not with not shaped
