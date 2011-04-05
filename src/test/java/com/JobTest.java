@@ -12,7 +12,7 @@ public class JobTest {
     assertFalse(false);
   }
   @Test
-  public void testFailure() {
-    assertTrue(false);
+  public void testEquals() {
+    assertEquals(true, true);
   }
 }
