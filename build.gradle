@@ -44,7 +44,13 @@ Server is up!
         }
     }
 }
-task commitabunch {
+repositories {
+    mavenCentral()
+}
+dependencies {
+    testCompile 'junit:junit:4.8.2'
+}
+task commitabunch << {
     def rand = new Random()
     def str = "fixed a bug with the media content not wanting to shape the circle properly like the square was shaped working on unit test for class that seemed difficult"
     def strs = str.split(' ')
