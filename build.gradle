@@ -1,10 +1,10 @@
-def HUDSON_VERSION = 1.393
-def JENKINS_VERSION = 1.392
+def HUDSON_VERSION = 1.398
+def JENKINS_VERSION = 1.405
 
 apply plugin: 'jetty'    
 defaultTasks "opts"
 port = System.properties['port'] ? Integer.parseInt(System.properties['port']) : 8080
-buildDir = "build$port"
+buildDir = "build/$port"
 
 task opts << {
     println """Usage: gradle [hudson|jenkins]-[basic|intermediate|expert]
