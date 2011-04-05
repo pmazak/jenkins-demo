@@ -33,3 +33,4 @@
 // QC-74: to bug bug content seemed bug shape square media was properly
 // QC-14: shape unit the fixed was like fixed with circle content fixed
 // QC-88: media was difficult that was was circle not with not shaped
+// QC-96: square seemed bug circle on media with media on to shape
