@@ -6,3 +6,4 @@
 // QC-9: unit like shape properly shape square class for the that with
 // QC-24: wanting unit difficult shaped the the wanting to to a difficult
 // QC-48: to wanting the the the fixed difficult shape square wanting shape
+// QC-52: shape wanting fixed shape fixed fixed properly wanting that shaped the
