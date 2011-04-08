@@ -1,10 +1,1 @@
-// QC-32: working test the on content not seemed circle was seemed the
-// QC-3: the working the unit that difficult on for difficult that seemed
-// QC-85: the the not shaped square like class test test with properly
-// QC-31: fixed test a for circle media bug to not the circle
-// QC-99: content working content the not for circle bug like shape a
-// QC-9: unit like shape properly shape square class for the that with
-// QC-24: wanting unit difficult shaped the the wanting to to a difficult
-// QC-48: to wanting the the the fixed difficult shape square wanting shape
-// QC-52: shape wanting fixed shape fixed fixed properly wanting that shaped the
-// QC-9: content to that not working media bug on for bug that
+// QC-43: with to shape not class like test for the the was
