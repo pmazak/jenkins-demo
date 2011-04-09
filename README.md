@@ -1,3 +1,4 @@
+<base target="_blank">
 # Jenkins Demo
 Runs Jenkins on Jetty.  
 Requires Gradle.  
@@ -13,7 +14,6 @@ Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/s
 
 ---
 ##Outline Notes
-<base target="_blank">
 ### Beginner
 ##### Hudson vs Jenkins
    * [jenkins downloads](http://mirrors.jenkins-ci.org/war/)
@@ -64,23 +64,23 @@ Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/s
   * Text-finder   configure: "Revision", search console, mark build Unstable.
   * The Continuous Integration Game
 # Intermediate
-  Scp plugin
-  SVenton
-  Email
+  * Email
+  * Scp plugin
+  * SVenton
   Templates-New job from job
   Templates-Project extension (mvn and regular, can mix 'n match)
   Promote builds
-  Schedule all sorts of tasks:
-   Backup its own config
-   Ruby environment tests
-   Tech debt
-   Cuke progress
+  * Schedule all sorts of tasks:
+   * Backup its own config
+   * Ruby environment tests
+   * Tech debt
+   * Cuke progress
 # Expert
-  Post build groovy
+  * [Build Pipelines](http://weblogs.java.net/blog/johnsmart/archive/2011/03/10/build-pipelines-jenkinshudson)
+  * Post build groovy
+  * XML api
+  * CLI api
   Jelly scripting
-  CLI api
-  XML api
   Programming for Hudson, plugins
   Clustering (can use individual computers)
   Cloud bee
-  * [Build Pipelines](http://weblogs.java.net/blog/johnsmart/archive/2011/03/10/build-pipelines-jenkinshudson)

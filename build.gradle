@@ -1,10 +1,10 @@
 def HUDSON_VERSION = 1.398
-def JENKINS_VERSION = 1.405
+def JENKINS_VERSION = 1.399
 
 apply plugin: 'jetty'    
 defaultTasks "opts"
-port = System.properties['port'] ? Integer.parseInt(System.properties['port']) : 8080
-buildDir = "build/$port"
+port = 8080
+buildDir = "build/demo"
 
 task opts << {
     println """Usage: gradle [hudson|jenkins]-[basic|intermediate|expert]
@@ -19,6 +19,8 @@ task "hudson-basic" << {
     jettyRunWar.execute()
 }
 task "jenkins-basic" << {
+    port = System.properties['port'] ? Integer.parseInt(System.properties['port']) : port
+    project.buildDir = "build/$port"
     def ciName = "jenkins"
     if (JENKINS_VERSION < 1.396) {
         ciName = "hudson"
@@ -49,6 +51,28 @@ repositories {
 }
 dependencies {
     testCompile 'junit:junit:4.8.2'
+}
+task post << {
+    new URL("http://localhost:8080/jenkins-basic/createItem?name=demo-CI").class.methods.each {
+    println it
+    }
+    /*
+        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+			name = 'absoluteUrlPathAndJarName'
+            addArtifactPattern('http://[organization]/[artifact]')
+        }		
+    configurations {
+	huds
+}
+dependencies {
+	huds "$hudsonUrl/jnlpJars:hudson-cli.jar"
+}
+task huds << {
+	def jar = configurations.huds.asPath.replaceAll("\\\\", "/")
+}
+download git.hpi
+make gradle jenkins just give you git, the CI job and the QA job if not want it, don't use demo
+    */
 }
 task commitabunch << {
     def rand = new Random()
