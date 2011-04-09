@@ -1,0 +1,27 @@
+/*
+* Groovy Postbuild Usage:
+*  evaluate(new File("${manager.build.environment['HUDSON_HOME']}/GroovyPostBuild.JobConfig.txt"))
+*  QA_job_promoting()
+*  CI_job_kicking_off_QA_job()
+*/
+
+QA_job_promoting = { 
+	manager.listener.logger.println("Promoting to QA...")
+	// do some code
+	manager.addBadge("/plugin/promoted-builds/icons/16x16/star-red.gif", "QA")
+}
+
+CI_job_kicking_off_QA_job = {
+    def nextJobName = "demo-QA"
+	manager.listener.logger.println("Kicking off $nextJobName!")
+    
+    // The following variable made available by a 
+    // patched version of the Promoted Builds plugin
+	def origBuildNumber = manager.build.environment['ORIG_BUILD_NUMBER']
+	
+    def causedByUser = manager.build.getCause(hudson.model.Cause$UserCause)
+	def buildNumberParam = new hudson.model.StringParameterValue("CI_BUILD_NUMBER",origBuildNumber)
+	def withParameters = new hudson.model.ParametersAction(buildNumberParam)
+    def nextJob = manager.hudson.getItem(nextJobName);
+    nextJob.scheduleBuild(2, causedByUser, withParameters)
+}

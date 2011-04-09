@@ -1,0 +1,4 @@
+SAVEIFS=$IFS; IFS=$(echo -en "\n\b"); echo "" > all-configs.xml; for i in `ls /.hudson/jobs`; do (echo "$SAVEIFS====="; echo "JOB: $i"; echo "=====";  cat /.hudson/jobs/$i/config.xml ) >> all-configs.xml; done; IFS=$SAVEIFS;
+
+svn add all-configs.xml
+svn commit --no-auth-cache --username ciadmin --password dummy -m "INTERNAL: CI auto backup of configuration files" .

@@ -9,7 +9,7 @@ Requires Gradle.
 
 ---
 ## Presentation
-Get the slide deck from [skydrive](http://cid-adc7888fd558a4e8.office.live.com/self.aspx/.Public/Presentations/).
+Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/self.aspx/.Public/Presentations/).
 
 ---
 ##Outline Notes

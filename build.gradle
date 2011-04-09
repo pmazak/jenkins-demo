@@ -55,7 +55,7 @@ task commitabunch << {
     def str = "fixed a bug with the media content not wanting to shape the circle properly like the square was shaped working on unit test for class that seemed difficult"
     def strs = str.split(' ')
     def randCommits = rand.nextInt(21)+1
-    new File(".commitabunch").delete()
+    new File("config/.commitabunch").delete()
     (0..randCommits).each {
        def randNum = rand.nextInt(101)+1
        def randStr = ""
