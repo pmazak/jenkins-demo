@@ -83,4 +83,4 @@ Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/s
   Programming for Hudson, plugins
   Clustering (can use individual computers)
   Cloud bee
- # Workflow Build Streams
+  * [Build Pipelines](http://weblogs.java.net/blog/johnsmart/archive/2011/03/10/build-pipelines-jenkinshudson)
