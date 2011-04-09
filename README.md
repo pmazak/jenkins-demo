@@ -4,8 +4,8 @@ Requires Gradle.
 
 ---
 ## Usage
-    > gradle hudson
-    > gradle jenkins
+    gradle hudson
+    gradle jenkins
 
 ---
 ## Presentation
