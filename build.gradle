@@ -4,6 +4,7 @@ import org.apache.commons.httpclient.methods.StringRequestEntity
 
 apply plugin: 'jetty'    
 buildDir = "build/demo"
+defaultTasks 'jenkins'
 
 buildscript {
     repositories {
@@ -26,7 +27,13 @@ configurations {
 }
 dependencies {
     ci "mirrors.jenkins-ci.org/war/latest:jenkins.war"
-    ci "hudson-ci.org/downloads/plugins/git/1.1.4:git.hpi"
+    def pluginsUrl = "hudson-ci.org/downloads/plugins"
+    ci "$pluginsUrl/git/1.1.4:git.hpi"
+    ci "$pluginsUrl/groovy-postbuild/1.3:groovy-postbuild.hpi"
+    ci "$pluginsUrl/promoted-builds/1.10:promoted-builds.hpi"
+    ci "$pluginsUrl/email-ext/2.10:email-ext.hpi" 
+    ci "$pluginsUrl/template-project/1.2:template-project.hpi"
+    ci "$pluginsUrl/build-pipeline-plugin/1.0.0:build-pipeline-plugin.hpi"
     testCompile 'junit:junit:4.8.2'
 }
 
@@ -35,7 +42,7 @@ configurations.ci.each {
     ciFiles << it    
 }
 
-task jenkins << {
+task jenkins (description: 'Runs jetty server with Jenkins CI.') << {
     project.buildDir = "build/8080"
     clean.execute()
     jettyRunWar {
@@ -49,8 +56,16 @@ task jenkins << {
     jettyRunWar.execute()
 }
 
-task createJob << {
-    ant.copy(file: ciFiles[1], tofile: "$JENKINS_HOME/plugins/git.hpi", verbose: true)
+task plugins (description: 'Installs Jenkins plugins in the demo.') << {
+    def pluginNames = ["git", "groovy-postbuild", "promoted-builds", "email-ext", "template-project", "build-pipeline-plugin"]
+    def downloadId = 1
+    pluginNames.each {
+        ant.copy(file: ciFiles[downloadId], tofile: "$JENKINS_HOME/plugins/${it}.hpi", verbose: true)
+        downloadId++
+    }
+}
+
+task createJob (description: 'Creates demo-CI job. Requires Jenkins server to be running.') << {
     def jobName = "demo-CI"
     HttpClient httpClient = new HttpClient();
     def postMethod = new PostMethod("$LOCAL_URL/createItem?name=$jobName")
@@ -62,7 +77,7 @@ task createJob << {
     println "Creating $jobName job ... [$responseCode]"
 }
 
-task commitabunch << {
+task commitabunch (description: 'Makes a trail of commits to show changes between CI builds.') << {
     def rand = new Random()
     def strs = RANDOM_COMMENT_WORDS.split(' ')
     def randCommits = rand.nextInt(21)+1

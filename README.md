@@ -63,7 +63,7 @@ Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/s
   * Crap4j
 ##### Basic Plugins
   * Text-finder   configure: "Revision", search console, mark build Unstable.
-  * The Continuous Integration Game
+  * Install Git, Groovy Postbuild, Promoted Builds, Email-ext, Template Project, Pipelines
 # Intermediate
   * Email
   * Scp plugin
