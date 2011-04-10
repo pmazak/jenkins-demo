@@ -1,86 +1,56 @@
-def HUDSON_VERSION = 1.398
-def JENKINS_VERSION = 1.399
-
-apply plugin: 'jetty'    
-defaultTasks "opts"
-port = 8080
-buildDir = "build/demo"
-
-task opts << {
-    println """Usage: gradle [hudson|jenkins]-[basic|intermediate|expert]
- Examples: 
-          gradle hudson-basic
-          gradle jenkins-intermediate
-"""
-}
-task "hudson-basic" << {
-    configJetty("http://java.net/downloads/hudson/war/hudson-${HUDSON_VERSION}.war",
-        "hudson-${HUDSON_VERSION}.war", "hudson-basic")
-    jettyRunWar.execute()
-}
-task "jenkins-basic" << {
-    port = System.properties['port'] ? Integer.parseInt(System.properties['port']) : port
-    project.buildDir = "build/$port"
-    def ciName = "jenkins"
-    if (JENKINS_VERSION < 1.396) {
-        ciName = "hudson"
-    }
-    configJetty("http://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/${ciName}.war",
-        "jenkins-${JENKINS_VERSION}.war", "jenkins-basic")
-    jettyRunWar.execute()
-}
-def configJetty(downloadUrl, fileName, ciName) {
-    clean.execute()
-    ant.get(src:downloadUrl, dest:".gradle/$fileName", skipexisting:true, verbose:true)
-    jettyRunWar {
-        httpPort = port
-        System.setProperty("HUDSON_HOME", "config/.$ciName")
-        contextPath = ciName
-        webApp = new File(".gradle/$fileName")
-        doFirst {
-            println """
-Server is up!
-    Browse to: http://localhost:$port/$contextPath
-  (Control-C to stop)
-"""
-        }
-    }
-}
-buildscript {
-    repositories {
-        mavenCentral()
-}
-
-dependencies {
-        classpath 'commons-httpclient:commons-httpclient:3.1'
-    }
-}
-    repositories {
-        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-			name = 'absoluteUrl'
-            addArtifactPattern('http://[organization]/[artifact]')
-        }		
-}
-    configurations {
-	huds
-}
-    dependencies {
-	//huds "mirrors.jenkins-ci.org/war/latest:jenkins.war@war"
-huds "mirrors.jenkins-ci.org/war/latest:jenkins.war"
-    testCompile 'junit:junit:4.8.2'
-
-        }
-task prn << {
-        println configurations.huds.asPath.replaceAll("\\\\", "/")
-        }
 import org.apache.commons.httpclient.HttpClient
 import org.apache.commons.httpclient.methods.PostMethod
 import org.apache.commons.httpclient.methods.StringRequestEntity
 
-task createDemoJob << {
-        def jobName = "demo7-CI"
+apply plugin: 'jetty'    
+port = 8080
+buildDir = "build/demo"
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'commons-httpclient:commons-httpclient:3.1'
+    }
+}
+
+repositories {
+    add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+        name = 'absoluteUrl'
+        addArtifactPattern('http://[organization]/[artifact]')
+    }		
+}
+configurations {
+    ci
+}
+dependencies {
+    ci "mirrors.jenkins-ci.org/war/latest:jenkins.war"
+    testCompile 'junit:junit:4.8.2'
+}
+    
+task jenkins << {
+    port = System.properties['port'] ? Integer.parseInt(System.properties['port']) : port
+    project.buildDir = "build/$port"
+    def ciName = "jenkins"
+    def ciWar = configurations.ci.asPath.replaceAll("\\\\", "/")
+    clean.execute()
+    jettyRunWar {
+        httpPort = port
+        System.setProperty("JENKINS_HOME", "config/.$ciName")
+        contextPath = "/"
+        webApp = new File(ciWar)
+        doFirst {
+            println JETTY_MESSAGE
+        }
+    }
+    jettyRunWar.execute()
+}
+
+task createJob << {
+        def jobName = "demo-CI"
         HttpClient httpClient = new HttpClient();
-        def postMethod = new PostMethod("http://localhost:8080/jenkins-basic/createItem?name=$jobName")
+        def postMethod = new PostMethod("$LOCAL_URL/createItem?name=$jobName")
         def gitRepo = new File("").toURI().toString().replace("file:/", "")
         def config = new File("config/DemoCI.JobConfig.txt").text
         config = config.replace("[[REPLACEME]]", gitRepo)
@@ -92,6 +62,7 @@ download git.hpi
 make gradle jenkins just give you git, the CI job and the QA job if not want it, don't use demo
     */
 }
+
 task commitabunch << {
     def rand = new Random()
     def str = "fixed a bug with the media content not wanting to shape the circle properly like the square was shaped working on unit test for class that seemed difficult"
@@ -109,3 +80,10 @@ task commitabunch << {
        ant.exec(command:"git commit -am '$comment'")
     }
 }
+
+LOCAL_URL = "http://localhost:8080"
+JETTY_MESSAGE = """
+Server is coming up...
+    Browse to: $LOCAL_URL/
+  (Control-C to stop)
+"""
