@@ -3,7 +3,6 @@ import org.apache.commons.httpclient.methods.PostMethod
 import org.apache.commons.httpclient.methods.StringRequestEntity
 
 apply plugin: 'jetty'    
-port = 8080
 buildDir = "build/demo"
 
 buildscript {
@@ -26,20 +25,22 @@ configurations {
 }
 dependencies {
     ci "mirrors.jenkins-ci.org/war/latest:jenkins.war"
+    ci "hudson-ci.org/downloads/plugins/git/1.1.4:git.hpi"
     testCompile 'junit:junit:4.8.2'
 }
-    
+
+def ciFiles = []
+configurations.ci.each {
+    ciFiles << it    
+}
+
 task jenkins << {
-    port = System.properties['port'] ? Integer.parseInt(System.properties['port']) : port
-    project.buildDir = "build/$port"
-    def ciName = "jenkins"
-    def ciWar = configurations.ci.asPath.replaceAll("\\\\", "/")
+    project.buildDir = "build/8080"
     clean.execute()
     jettyRunWar {
-        httpPort = port
-        System.setProperty("JENKINS_HOME", "config/.$ciName")
+        System.setProperty("JENKINS_HOME", JENKINS_HOME)
+        webApp = ciFiles[0]
         contextPath = "/"
-        webApp = new File(ciWar)
         doFirst {
             println JETTY_MESSAGE
         }
@@ -48,25 +49,21 @@ task jenkins << {
 }
 
 task createJob << {
-        def jobName = "demo-CI"
-        HttpClient httpClient = new HttpClient();
-        def postMethod = new PostMethod("$LOCAL_URL/createItem?name=$jobName")
-        def gitRepo = new File("").toURI().toString().replace("file:/", "")
-        def config = new File("config/DemoCI.JobConfig.txt").text
-        config = config.replace("[[REPLACEME]]", gitRepo)
-        postMethod.requestEntity = new StringRequestEntity(config, "application/xml", "UTF-8")
-        def responseCode = httpClient.executeMethod(postMethod)
-        println "Creating $jobName job ... [$responseCode]"
-/*
-download git.hpi
-make gradle jenkins just give you git, the CI job and the QA job if not want it, don't use demo
-    */
+    ant.copy(file: ciFiles[1], tofile: "$JENKINS_HOME/plugins/git.hpi", verbose: true)
+    def jobName = "demo-CI"
+    HttpClient httpClient = new HttpClient();
+    def postMethod = new PostMethod("$LOCAL_URL/createItem?name=$jobName")
+    def gitRepo = new File("").toURI().toString().replace("file:/", "")
+    def config = new File("config/DemoCI.JobConfig.txt").text
+    config = config.replace("[[REPLACEME]]", gitRepo)
+    postMethod.requestEntity = new StringRequestEntity(config, "application/xml", "UTF-8")
+    def responseCode = httpClient.executeMethod(postMethod)
+    println "Creating $jobName job ... [$responseCode]"
 }
 
 task commitabunch << {
     def rand = new Random()
-    def str = "fixed a bug with the media content not wanting to shape the circle properly like the square was shaped working on unit test for class that seemed difficult"
-    def strs = str.split(' ')
+    def strs = RANDOM_COMMENT_WORDS.split(' ')
     def randCommits = rand.nextInt(21)+1
     new File("config/.commitabunch").delete()
     (0..randCommits).each {
@@ -81,9 +78,11 @@ task commitabunch << {
     }
 }
 
+JENKINS_HOME = "config/.jenkins"
 LOCAL_URL = "http://localhost:8080"
 JETTY_MESSAGE = """
 Server is coming up...
     Browse to: $LOCAL_URL/
   (Control-C to stop)
 """
+RANDOM_COMMENT_WORDS = "fixed a bug with the media content not wanting to shape the circle properly like the square was shaped working on unit test for class that seemed difficult"
