@@ -75,6 +75,7 @@ task commitabunch << {
            randStr += " " + strs[rand.nextInt(strs.length)]
        }
        def comment = "QC-$randNum:$randStr"
+       println comment
        new File(commitFile) << "// $comment\n"
        ant.exec(command:"git commit -am '$comment'")
     }
