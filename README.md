@@ -80,7 +80,9 @@ Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/s
   * Post build groovy
   * XML api
   * CLI api
-  Jelly scripting
-  Programming for Hudson, plugins
-  Clustering (can use individual computers)
-  Cloud bee
+  * Writing plugins for Hudson
+   * [Maven create plugin](http://wiki.hudson-ci.org/display/HUDSON/Plugin+tutorial)
+   * [Plugin structure](http://wiki.hudson-ci.org/display/HUDSON/Plugin+structure)
+   * Jelly scripting
+  * Clustering (can use individual computers)
+  * Cloudbees
