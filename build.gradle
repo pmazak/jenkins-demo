@@ -66,7 +66,8 @@ task commitabunch << {
     def rand = new Random()
     def strs = RANDOM_COMMENT_WORDS.split(' ')
     def randCommits = rand.nextInt(21)+1
-    new File("config/.commitabunch").delete()
+    def commitFile = "config/.commitabunch"
+    new File(commitFile).delete()
     (0..randCommits).each {
        def randNum = rand.nextInt(101)+1
        def randStr = ""
@@ -74,7 +75,7 @@ task commitabunch << {
            randStr += " " + strs[rand.nextInt(strs.length)]
        }
        def comment = "QC-$randNum:$randStr"
-       new File("commitabunch.txt") << "// $comment\n"
+       new File(commitFile) << "// $comment\n"
        ant.exec(command:"git commit -am '$comment'")
     }
 }
