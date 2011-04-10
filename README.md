@@ -5,9 +5,10 @@ Requires Gradle.
 
 ---
 ## Usage
-    gradle hudson
     gradle jenkins
-
+    gradle createJob
+    (restart jenkins)
+    gradle commitabunch
 ---
 ## Presentation
 Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/self.aspx/.Public/Presentations/).
