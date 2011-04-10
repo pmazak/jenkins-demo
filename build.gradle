@@ -46,16 +46,32 @@ Server is up!
         }
     }
 }
-repositories {
-    mavenCentral()
-}
-dependencies {
-    testCompile 'junit:junit:4.8.2'
-}
-task post << {
-    new URL("http://localhost:8080/jenkins-basic/createItem?name=demo-CI").class.methods.each {
-    println it
+buildscript {
+    repositories {
+        mavenCentral()
     }
+    dependencies {
+        classpath 'commons-httpclient:commons-httpclient:3.1'
+    }
+}
+    dependencies {
+        testCompile 'junit:junit:4.8.2'
+    }
+
+import org.apache.commons.httpclient.HttpClient
+import org.apache.commons.httpclient.methods.PostMethod
+import org.apache.commons.httpclient.methods.StringRequestEntity
+
+task createDemoJob << {
+        def jobName = "demo7-CI"
+        HttpClient httpClient = new HttpClient();
+        def postMethod = new PostMethod("http://localhost:8080/jenkins-basic/createItem?name=$jobName")
+        def gitRepo = new File("").toURI().toString().replace("file:/", "")
+        def config = new File("config/DemoCI.JobConfig.txt").text
+        config = config.replace("[[REPLACEME]]", gitRepo)
+        postMethod.requestEntity = new StringRequestEntity(config, "application/xml", "UTF-8")
+        def responseCode = httpClient.executeMethod(postMethod)
+        println "Creating $jobName job ... [$responseCode]"
     /*
         add(new org.apache.ivy.plugins.resolver.URLResolver()) {
 			name = 'absoluteUrlPathAndJarName'
