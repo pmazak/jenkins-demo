@@ -49,15 +49,30 @@ Server is up!
 buildscript {
     repositories {
         mavenCentral()
-    }
-    dependencies {
+}
+
+dependencies {
         classpath 'commons-httpclient:commons-httpclient:3.1'
     }
 }
+    repositories {
+        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+			name = 'absoluteUrl'
+            addArtifactPattern('http://[organization]/[artifact]')
+        }		
+}
+    configurations {
+	huds
+}
     dependencies {
-        testCompile 'junit:junit:4.8.2'
-    }
+	//huds "mirrors.jenkins-ci.org/war/latest:jenkins.war@war"
+huds "mirrors.jenkins-ci.org/war/latest:jenkins.war"
+    testCompile 'junit:junit:4.8.2'
 
+        }
+task prn << {
+        println configurations.huds.asPath.replaceAll("\\\\", "/")
+        }
 import org.apache.commons.httpclient.HttpClient
 import org.apache.commons.httpclient.methods.PostMethod
 import org.apache.commons.httpclient.methods.StringRequestEntity
@@ -72,20 +87,7 @@ task createDemoJob << {
         postMethod.requestEntity = new StringRequestEntity(config, "application/xml", "UTF-8")
         def responseCode = httpClient.executeMethod(postMethod)
         println "Creating $jobName job ... [$responseCode]"
-    /*
-        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-			name = 'absoluteUrlPathAndJarName'
-            addArtifactPattern('http://[organization]/[artifact]')
-        }		
-    configurations {
-	huds
-}
-dependencies {
-	huds "$hudsonUrl/jnlpJars:hudson-cli.jar"
-}
-task huds << {
-	def jar = configurations.huds.asPath.replaceAll("\\\\", "/")
-}
+/*
 download git.hpi
 make gradle jenkins just give you git, the CI job and the QA job if not want it, don't use demo
     */
