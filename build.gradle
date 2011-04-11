@@ -83,7 +83,7 @@ task createJob (description: 'Creates demo-CI job. Requires Jenkins server to be
 task commitabunch (description: 'Makes a trail of commits to show changes between CI builds.') << {
     def rand = new Random()
     def strs = RANDOM_COMMENT_WORDS.split(' ')
-    def randCommits = rand.nextInt(21)+1
+    def randCommits = rand.nextInt(11)+1
     def commitFile = "config/.commitabunch"
     new File(commitFile).delete()
     (0..randCommits).each {
