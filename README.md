@@ -35,15 +35,18 @@ Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/s
    * [Oracle claims trademark](http://www.theregister.co.uk/2010/12/01/oracle_owns_hudson/)
    * [Who's driving?](http://jenkins-ci.org/content/whos-driving-thing)
    * [Kohsuke Morning of lockout](http://kohsuke.org/2010/11/23/hudson-java-net-migration-status-update/)
+
 #### Install
 #### Config
 #### Reporting plugins
   * Junit     configure:  gradle test, \*\*/test-results/\*.xml,  failing test will fail build
   * Pmd
   * Crap4j
+
 #### Basic Plugins
   * Text-finder   configure: "Revision", search console, mark build Unstable.
   * Install Git, Groovy Postbuild, Promoted Builds, Email-ext, Template Project, Pipelines
+
 ### Intermediate
   * Email
   * Scp plugin
@@ -56,6 +59,7 @@ Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/s
    * Ruby environment tests
    * Tech debt
    * Cucumber tests
+
 ### Expert
   * [Build Pipelines](http://weblogs.java.net/blog/johnsmart/archive/2011/03/10/build-pipelines-jenkinshudson)
   * Post build groovy
