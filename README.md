@@ -6,15 +6,17 @@ Requires Gradle.
 ---
 ## Usage
     gradle jenkins
+     (after config/.jenkins is created, stop the server)
+    gradle plugins jenkins
+     (after it's up, from a separate console run the following)
     gradle createJob
-    (restart jenkins)
-    gradle commitabunch
+
 ---
 ## Presentation
 Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/self.aspx/.Public/Presentations/).
 
 ---
-##Outline Notes
+## Outline Notes
 ### Beginner
 ##### Hudson vs Jenkins
    * [jenkins downloads](http://mirrors.jenkins-ci.org/war/)
@@ -29,34 +31,6 @@ Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/s
    * [Kohsuke Morning of lockout](http://kohsuke.org/2010/11/23/hudson-java-net-migration-status-update/)
 ##### Install
 ##### Config
-        SMTP, only need JDK if building multiples
-        First job, called -CI
-        Freestyle
-        Walk thru options. self-explanatory. ?'s very helpful.
-        I don't have SVN, so need Git
-        Main config, Plugins, checkbox, install
-        Go to job options. It's not there.
-        Restart server. It's there.
-        plugins tangent   
-            CD to where plugins are stored.
-            cp git.hpi git.zip
-            git.zip, jar in certain [structure](http://wiki.hudson-ci.org/display/HUDSON/Plugin+structure)
-            index.[jelly](http://commons.apache.org/jelly/) is description
-        git repo@  file:///D:/code/_Presentations/Hudson_Jenkins_Best_Practices/Hudson
-        job options build:
-            echo public class ABC {} >ABC.java 
-            javac ABC.java 
-            gradle clean test
-        commands (ant, maven, gradle, buildr) are just calling installed versions
-        show workspace, just scheduler doing work on the drive
-        Poll SCM, rarely build periodically
-            */15 * * * *
-        but i'll put it on
-            * * * * *
-        goto d:\code\_Presentations\Hudson_Jenkins_Best_Practices\Hudson
-        make changes, obviously nothing until commit
-        script here commits a bunch of changes
-        gradle commitabunch
 ##### Reporting plugins
   * Junit     configure:  gradle test, \*\*/test-results/\*.xml,  failing test will fail build
   * Pmd
@@ -68,14 +42,14 @@ Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/s
   * Email
   * Scp plugin
   * SVenton
-  Templates-New job from job
-  Templates-Project extension (mvn and regular, can mix 'n match)
-  Promote builds
+  * Templates-New job from job
+  * Templates-Project extension (mvn and regular, can mix 'n match)
+  * Promote builds
   * Schedule all sorts of tasks:
    * Backup its own config
    * Ruby environment tests
    * Tech debt
-   * Cuke progress
+   * Cucumber tests
 # Expert
   * [Build Pipelines](http://weblogs.java.net/blog/johnsmart/archive/2011/03/10/build-pipelines-jenkinshudson)
   * Post build groovy

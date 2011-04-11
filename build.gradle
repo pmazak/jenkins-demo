@@ -25,15 +25,19 @@ repositories {
 configurations {
     ci
 }
+def pluginNames = []
+downloadPlugin = { name, ver -> 
+    pluginNames << name
+    "hudson-ci.org/downloads/plugins/$name/$ver:${name}.hpi"
+}
 dependencies {
     ci "mirrors.jenkins-ci.org/war/latest:jenkins.war"
-    def pluginsUrl = "hudson-ci.org/downloads/plugins"
-    ci "$pluginsUrl/git/1.1.4:git.hpi"
-    ci "$pluginsUrl/groovy-postbuild/1.3:groovy-postbuild.hpi"
-    ci "$pluginsUrl/promoted-builds/1.10:promoted-builds.hpi"
-    ci "$pluginsUrl/email-ext/2.10:email-ext.hpi" 
-    ci "$pluginsUrl/template-project/1.2:template-project.hpi"
-    ci "$pluginsUrl/build-pipeline-plugin/1.0.0:build-pipeline-plugin.hpi"
+    ci downloadPlugin("git", "1.1.4")
+    ci downloadPlugin("groovy-postbuild", "1.3")
+    ci downloadPlugin("promoted-builds", "1.10")
+    ci downloadPlugin("email-ext", "2.10") 
+    ci downloadPlugin("template-project", "1.2")
+    ci downloadPlugin("build-pipeline-plugin", "1.0.0")
     testCompile 'junit:junit:4.8.2'
 }
 
@@ -57,7 +61,6 @@ task jenkins (description: 'Runs jetty server with Jenkins CI.') << {
 }
 
 task plugins (description: 'Installs Jenkins plugins in the demo.') << {
-    def pluginNames = ["git", "groovy-postbuild", "promoted-builds", "email-ext", "template-project", "build-pipeline-plugin"]
     def downloadId = 1
     pluginNames.each {
         ant.copy(file: ciFiles[downloadId], tofile: "$JENKINS_HOME/plugins/${it}.hpi", verbose: true)

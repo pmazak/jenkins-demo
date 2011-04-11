@@ -1,7 +1,7 @@
 /*
 * Groovy Postbuild Usage:
-*  evaluate(new File("${manager.build.environment['HUDSON_HOME']}/GroovyPostBuild.JobConfig.txt"))
-*  CI_job_kicking_off_QA_job()
+*  evaluate(new File("${manager.build.environment['JENKINS_HOME']}/../GroovyPostBuild.JobConfig.txt"))
+*  QA_job_promoting()
 */
 
 CI_job_kicking_off_QA_job = {
@@ -13,7 +13,7 @@ CI_job_kicking_off_QA_job = {
 	def origBuildNumber = manager.build.environment['ORIG_BUILD_NUMBER']
 	
     def causedByUser = manager.build.getCause(hudson.model.Cause$UserCause)
-	def buildNumberParam = new hudson.model.StringParameterValue("CI_BUILD_NUMBER",origBuildNumber)
+	def buildNumberParam = new hudson.model.StringParameterValue("CI_BUILD_NUMBER", origBuildNumber)
 	def withParameters = new hudson.model.ParametersAction(buildNumberParam)
     def nextJob = manager.hudson.getItem(nextJobName);
     nextJob.scheduleBuild(2, causedByUser, withParameters)
