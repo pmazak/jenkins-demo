@@ -87,7 +87,7 @@ task commitabunch (description: 'Makes a trail of commits to show changes betwee
     def commitFile = "config/.commitabunch"
     new File(commitFile).delete()
     (0..randCommits).each {
-       def randNum = rand.nextInt(101)+1
+       def randNum = rand.nextInt(21)+1
        def randStr = ""
        (0..10).each {
            randStr += " " + strs[rand.nextInt(strs.length)]
