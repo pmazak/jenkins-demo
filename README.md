@@ -5,15 +5,15 @@ Requires Gradle.
 
 ---
 ## First time only
-    1. gradle jenkins
-     (After server is up, stop the server.)
-    2. gradle installPlugins jenkins
-     (While server is up, from a separate console run this.)
-    3. gradle createJob
+    1> gradle jenkins
+      (After server is up, stop the server.)
+    2> gradle installPlugins jenkins
+      (While server is up, from a separate console run this.)
+    3> gradle createJob
 
 ---
 ## Optional
-    gradle commitabunch (Use as often as you like to see code changes between builds.)
+    gradle commitabunch  (Use as often as you like to see code changes between builds.)
 
 ---
 ## Presentation
