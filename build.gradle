@@ -25,11 +25,13 @@ repositories {
 configurations {
     ci
 }
+
 def pluginNames = []
 downloadPlugin = { name, ver -> 
     pluginNames << name
     "hudson-ci.org/downloads/plugins/$name/$ver:${name}.hpi"
 }
+
 dependencies {
     ci "mirrors.jenkins-ci.org/war/latest:jenkins.war"
     ci downloadPlugin("git", "1.1.4")
