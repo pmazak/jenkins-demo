@@ -5,13 +5,13 @@ Requires Gradle.
 
 ---
 ## First time only
-    1> gradle jenkins
+    1.  gradle jenkins
     (After server is up, stop the server.)
     
-    2> gradle installPlugins jenkins
+    2.  gradle installPlugins jenkins
     
     (While server is up, from a separate console run the following.)
-    3> gradle createJob
+    3.  gradle createJob
 
 ---
 ## Optional
