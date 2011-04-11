@@ -62,7 +62,7 @@ task jenkins (description: 'Runs jetty server with Jenkins CI.') << {
     jettyRunWar.execute()
 }
 
-task plugins (description: 'Installs Jenkins plugins in the demo.') << {
+task installPlugins (description: 'Installs Jenkins plugins in the demo.') << {
     def downloadId = 1
     pluginNames.each {
         ant.copy(file: ciFiles[downloadId], tofile: "$JENKINS_HOME/plugins/${it}.hpi", verbose: true)

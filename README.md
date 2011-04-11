@@ -4,13 +4,17 @@ Runs Jenkins on Jetty.
 Requires Gradle.  
 
 ---
-## Usage
+## First time only
     1. gradle jenkins
-     (After config/.jenkins is created, stop the server)
-    2. gradle plugins jenkins
-     (After server is up, from a separate console run the following)
+     (After server is up, stop the server.)
+    2. gradle installPlugins jenkins
+     (While server is up, from a separate console run this.)
     3. gradle createJob
-    4+. gradle commitabunch (Use as often as you like to see code changes between builds.)
+
+---
+## Optional
+    gradle commitabunch (Use as often as you like to see code changes between builds.)
+
 ---
 ## Presentation
 Get the slide deck from [SkyDrive](http://cid-adc7888fd558a4e8.office.live.com/self.aspx/.Public/Presentations/).
