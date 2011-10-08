@@ -6,6 +6,8 @@ apply plugin: 'jetty'
 buildDir = "build/demo"
 defaultTasks 'jenkins'
 
+ciPlugins = [ 'git', 'groovy-postbuild', 'promoted-builds', 'email-ext', 'template-project', 'build-pipeline-plugin', 'text-finder' ]
+
 buildscript {
     repositories {
         mavenCentral()
@@ -17,43 +19,18 @@ buildscript {
 
 repositories {
     mavenCentral()
-    add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-        name = 'absoluteUrl'
-        addArtifactPattern('http://[organization]/[artifact]')
-    }
 }
-configurations {
-    ci
-}
-
-def pluginNames = []
-downloadPlugin = { name, ver -> 
-    pluginNames << name
-    "hudson-ci.org/downloads/plugins/$name/$ver:${name}.hpi"
-}
-
 dependencies {
-    ci "mirrors.jenkins-ci.org/war/latest:jenkins.war"
-    ci downloadPlugin("git", "1.1.4")
-    ci downloadPlugin("groovy-postbuild", "1.3")
-    ci downloadPlugin("promoted-builds", "1.10")
-    ci downloadPlugin("email-ext", "2.10") 
-    ci downloadPlugin("template-project", "1.2")
-    ci downloadPlugin("build-pipeline-plugin", "1.0.0")
     testCompile 'junit:junit:4.8.2'
 }
 
-def ciFiles = []
-configurations.ci.each {
-    ciFiles << it    
-}
-
 task jenkins (description: 'Runs jetty server with Jenkins CI.') << {
+    ant.get(src: "http://mirrors.jenkins-ci.org/war/latest/jenkins.war", dest: ".", verbose: true, skipexisting: true)
     project.buildDir = "build/8080"
     clean.execute()
     jettyRunWar {
         System.setProperty("JENKINS_HOME", JENKINS_HOME)
-        webApp = ciFiles[0]
+        webApp = new File("jenkins.war")
         contextPath = "/"
         doFirst {
             println JETTY_MESSAGE
@@ -63,10 +40,9 @@ task jenkins (description: 'Runs jetty server with Jenkins CI.') << {
 }
 
 task installPlugins (description: 'Installs Jenkins plugins in the demo.') << {
-    def downloadId = 1
-    pluginNames.each {
-        ant.copy(file: ciFiles[downloadId], tofile: "$JENKINS_HOME/plugins/${it}.hpi", verbose: true)
-        downloadId++
+    ciPlugins.each {
+        println " :$it"
+        ant.get(src: "http://mirrors.jenkins-ci.org/plugins/${it}/latest/${it}.hpi", dest: "$JENKINS_HOME/plugins/${it}.hpi", verbose: true, skipexisting: true)
     }
 }
 
@@ -74,9 +50,9 @@ task createJob (description: 'Creates demo-CI job. Requires Jenkins server to be
     def jobName = "demo-CI"
     HttpClient httpClient = new HttpClient();
     def postMethod = new PostMethod("$LOCAL_URL/createItem?name=$jobName")
-    def gitRepo = new File("").toURI().toString().replace("file:/", "")
+    def gitRepo = new File("").toURI().toString().replace("file:/", "").replace("%20", " ")
     def config = new File("config/DemoCI.JobConfig.txt").text
-    config = config.replace("[[REPLACEME]]", gitRepo)
+    config = config.replace("[[REPLACEME]]", "\"$gitRepo\"")
     postMethod.requestEntity = new StringRequestEntity(config, "application/xml", "UTF-8")
     def responseCode = httpClient.executeMethod(postMethod)
     println "Creating $jobName job ... [$responseCode]"
